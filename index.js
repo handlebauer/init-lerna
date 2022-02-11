@@ -11,8 +11,8 @@ import '@hbauer/init-lerna/src/process-error.js'
 
 import { defaultModules } from '@hbauer/init-lerna/src/default-modules.js'
 import { defaultGitignore } from '@hbauer/init-lerna/src/default-gitignore.js'
-import { defaultPackageJson } from './src/default-package-json.js'
-import { defaultLernaJson } from './src/default-lerna-json.js'
+import { defaultPackageJson } from '@hbauer/init-lerna/src/default-package-json.js'
+import { defaultLernaJson } from '@hbauer/init-lerna/src/default-lerna-json.js'
 import { getPwd } from '@hbauer/init-lerna/src/utils/get-pwd.js'
 
 const enquirer = new Enquirer()
