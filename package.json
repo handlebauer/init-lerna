@@ -21,6 +21,7 @@
     "shx": "^0.3.4"
   },
   "dependencies": {
+    "enquirer": "^2.3.6",
     "zx": "^5.0.0"
   }
 }
