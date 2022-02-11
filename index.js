@@ -13,6 +13,8 @@ import { defaultModules } from '@hbauer/init-lerna/src/default-modules.js'
 import { defaultGitignore } from '@hbauer/init-lerna/src/default-gitignore.js'
 import { defaultPackageJson } from '@hbauer/init-lerna/src/default-package-json.js'
 import { defaultLernaJson } from '@hbauer/init-lerna/src/default-lerna-json.js'
+import { defaultHuskyHook } from '@hbauer/init-lerna/src/default-husky-hook.js'
+
 import { getPwd } from '@hbauer/init-lerna/src/utils/get-pwd.js'
 
 const enquirer = new Enquirer()
@@ -45,6 +47,12 @@ fs.writeFileSync(pathTo('.gitignore'), defaultGitignore)
 
 // Finish up
 await $`yarn add -D ${defaultModules}`
+
+// Add husky
+await $`npx husky-init && yarn`
+await $`rm .husky/pre-commit`
+fs.writeFileSync(pathTo('.husky/pre-commit'), defaultHuskyHook)
+await $`chmod +x .husky/pre-commit`
 
 copy.writeSync(`cd ${repo}`)
 
