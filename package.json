@@ -1,0 +1,23 @@
+{
+  "name": "@hbauer/init-lerna",
+  "version": "0.0.0",
+  "type": "module",
+  "bin": "./index.js",
+  "author": "Donald Geddes",
+  "licence": "MIT",
+  "repository": "https://github.com/handlebauer/init-lerna.git",
+  "publishConfig": {
+    "access": "public"
+  },
+  "prettier": "@hbauer/prettier-config",
+  "eslintConfig": {
+    "extends": "@hbauer/eslint-config"
+  },
+  "devDependencies": {
+    "@hbauer/eslint-config": "^1.2.1",
+    "@hbauer/prettier-config": "^1.1.0",
+    "eslint": "^8.8.0",
+    "prettier": "^2.5.1",
+    "shx": "^0.3.4"
+  }
+}
