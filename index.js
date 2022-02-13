@@ -63,7 +63,7 @@ const dependencies = [
 await $`yarn add -D ${dependencies}`
 
 // First commit
-await $`git add . && git commit -m "Init"`
+await $`git add . && git commit -m "[main:root] Init"`
 
 // Set up husky
 await $`npx husky install`
