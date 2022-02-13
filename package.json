@@ -3,6 +3,10 @@
   "version": "0.2.0",
   "type": "module",
   "bin": "./index.js",
+  "files": [
+    "template/*",
+    "index.js"
+  ],
   "author": "Donald Geddes",
   "licence": "MIT",
   "repository": "https://github.com/handlebauer/init-lerna.git",
