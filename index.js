@@ -43,6 +43,7 @@ const packageRoot = createRequire(import.meta.url)
   .slice(0, -1)
   .join('/')
 await $`cp -r ${packageRoot}/template/. .`
+await $`mv default.gitignore .gitignore`
 
 // Install dev deps
 const dependencies = [
