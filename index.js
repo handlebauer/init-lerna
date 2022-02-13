@@ -1,24 +1,24 @@
-#!/usr/bin/env zx
+#!/usr/bin/env node
 
-import { $, fs, path, cd } from 'zx'
+import { createRequire } from 'module'
 
-$.verbose = false
-
+import { $, cd } from 'zx'
 import Enquirer from 'enquirer'
-import copy from 'clipboardy'
+import clipboard from 'clipboardy'
 
-import '@hbauer/init-lerna/src/process-error.js'
+// Show zx output?
+$.verbose = true
 
-import { defaultModules } from '@hbauer/init-lerna/src/default-modules.js'
-import { defaultGitignore } from '@hbauer/init-lerna/src/default-gitignore.js'
-import { defaultPackageJson } from '@hbauer/init-lerna/src/default-package-json.js'
-import { defaultLernaJson } from '@hbauer/init-lerna/src/default-lerna-json.js'
-import { defaultHuskyHook } from '@hbauer/init-lerna/src/default-husky-hook.js'
-
-import { getPwd } from '@hbauer/init-lerna/src/utils/get-pwd.js'
+// Catch uncaughts
+process.once('uncaughtException', () => {
+  console.log(`
+      Aborting..
+  `)
+})
 
 const enquirer = new Enquirer()
 
+// Prompt
 const { repo } = await enquirer.prompt({
   type: 'input',
   name: 'repo',
@@ -30,30 +30,49 @@ const { repo } = await enquirer.prompt({
 await $`mkdir ${repo}`
 await cd(repo)
 
-// Create packages directory
-await $`mkdir packages`
-
 // Initialize git
 await $`git init`
 
-// Write default files
-const pwd = await getPwd()
-const pathTo = to => path.join(pwd, to)
+// Create empty packages directory
+await $`mkdir packages`
 
-const packageJson = JSON.stringify(defaultPackageJson, null, 2)
-fs.writeFileSync(pathTo('package.json'), packageJson)
-fs.writeFileSync(pathTo('lerna.json'), defaultLernaJson)
-fs.writeFileSync(pathTo('.gitignore'), defaultGitignore)
+// Copy over template
+const packageRoot = createRequire(import.meta.url)
+  .resolve('@hbauer/init-lerna')
+  .split('/')
+  .slice(0, -1)
+  .join('/')
+await $`cp -r ${packageRoot}/template/. .`
 
-// Finish up
-await $`yarn add -D ${defaultModules}`
+// Install dev deps
+const dependencies = [
+  'lerna',
+  'zx',
+  'shx',
+  'rollup',
+  'ava',
+  'typescript',
+  'prettier',
+  '@hbauer/prettier-config',
+  'eslint',
+  'eslint-plugin-import',
+  '@hbauer/eslint-config',
+  'husky',
+]
+await $`yarn add -D ${dependencies}`
 
-// Add husky
-await $`npx husky-init && yarn`
-await $`rm .husky/pre-commit`
-fs.writeFileSync(pathTo('.husky/pre-commit'), defaultHuskyHook)
+// First commit
+await $`git add . && git commit -m "Init"`
+
+// Set up husky
+await $`npx husky install`
+await $`npm set-script prepare "husky install"`
 await $`chmod +x .husky/pre-commit`
+await $`chmod +x .husky/prepare-commit-msg`
+await $`git add . && git commit -m "Configure husky"`
 
-copy.writeSync(`cd ${repo}`)
+// Copy new package path to clipboard
+clipboard.writeSync(`cd ${repo}`)
 
+// Open up editor
 await $`code .`
