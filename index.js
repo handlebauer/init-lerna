@@ -2,9 +2,15 @@
 
 import { createRequire } from 'module'
 
-import { $, cd } from 'zx'
+import { $, cd, fs, path } from 'zx'
 import Enquirer from 'enquirer'
 import clipboard from 'clipboardy'
+
+import {
+  packageJsonSnippet,
+  buildPackageJson,
+  getPwd,
+} from '@hbauer/init-lerna/src/index.js'
 
 // Show zx output?
 $.verbose = true
@@ -16,15 +22,15 @@ process.once('uncaughtException', () => {
   `)
 })
 
-const enquirer = new Enquirer()
+const { Snippet } = Enquirer
 
 // Prompt
-const { repo } = await enquirer.prompt({
-  type: 'input',
-  name: 'repo',
-  message: 'Monorepo name:',
-  required: true,
-})
+const { values: fields } = await new Snippet(packageJsonSnippet).run()
+
+const { repo } = fields
+
+// Build package.json
+const packageJson = buildPackageJson(fields)
 
 // Create new project directory
 await $`mkdir ${repo}`
@@ -36,13 +42,18 @@ await $`git init`
 // Create empty packages directory
 await $`mkdir packages`
 
-// Copy over template
+// Write package.json file
+const pwd = await getPwd()
+const pathTo = to => path.join(pwd, to)
+fs.writeFileSync(pathTo('package.json'), JSON.stringify(packageJson, null, 2))
+
+// Copy over static files
 const packageRoot = createRequire(import.meta.url)
   .resolve('@hbauer/init-lerna')
   .split('/')
   .slice(0, -1)
   .join('/')
-await $`cp -r ${packageRoot}/template/. .`
+await $`cp -r ${packageRoot}/static/. .`
 await $`mv default.gitignore .gitignore`
 
 // Install dev deps
