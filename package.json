@@ -4,7 +4,7 @@
   "type": "module",
   "bin": "./index.js",
   "files": [
-    "template/*",
+    "static/*",
     "index.js"
   ],
   "author": "Donald Geddes",
