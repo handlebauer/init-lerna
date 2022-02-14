@@ -4,7 +4,8 @@
   "type": "module",
   "bin": "./index.js",
   "files": [
-    "static/*",
+    "src",
+    "static",
     "index.js"
   ],
   "author": "Donald Geddes",
