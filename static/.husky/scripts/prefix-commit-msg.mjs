@@ -38,7 +38,9 @@ if (BRANCH_NAME !== 'HEAD') {
    */
   const formattedScopes =
     (scopes.length === 1 && scopes[0] === 'root' && 'root') ||
-    (shallowEqualUnsortedArrays(scopes, allPackages) && '*') ||
+    ((shallowEqualUnsortedArrays(scopes, allPackages) ||
+      shallowEqualUnsortedArrays(scopes, ['root', ...allPackages])) &&
+      '*') ||
     (scopes.length > 2 &&
       [...scopes.slice(0, 2), `+${scopes.length - 2}`].join(',')) ||
     scopes.join(',')
