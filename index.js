@@ -71,7 +71,7 @@ const dependencies = [
   '@hbauer/eslint-config',
   'husky',
 ]
-await $`yarn add -D ${dependencies}`
+await $`yarn add -D -W ${dependencies}`
 
 // First commit
 await $`git add . && git commit -m "[main:root] Init"`
