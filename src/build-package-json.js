@@ -10,6 +10,6 @@ export const buildPackageJson = ({ user, repo }) => ({
     test: 'lerna run test',
     build: 'lerna run build',
     version: 'lerna version',
-    publish: 'lerna publish',
+    publish: 'lerna publish && lerna run prepare',
   },
 })
