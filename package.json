@@ -1,6 +1,6 @@
 {
   "name": "@hbauer/init-lerna",
-  "version": "0.5.4",
+  "version": "0.5.5",
   "type": "module",
   "bin": "./index.js",
   "files": [
