@@ -13,7 +13,7 @@ import {
 } from '@hbauer/init-lerna/src/index.js'
 
 // Show zx output?
-$.verbose = true
+$.verbose = false
 
 // Catch uncaughts
 process.once('uncaughtException', () => {
