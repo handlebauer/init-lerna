@@ -1,6 +1,8 @@
 #!/bin/sh node
 
-import { $, cd } from 'zx'
+import { $ } from 'zx'
+
+$.verbose = false
 
 const shallowEqualUnsortedArrays = (a, b) => {
   if (a.length !== b.length) return false
@@ -27,6 +29,13 @@ const scopes = [
 if (BRANCH_NAME !== 'HEAD') {
   const allPackages = (await $`ls packages`).stdout.split('\n').filter(Boolean)
 
+  /**
+   * Format scopes:
+   *  1. [<branch>:root] if only root has been affected
+   *  2. [<branch>:*] if all packages have been affected
+   *  3. [<branch>:<a>,<b>,+<n>] if > 2 packages have been affected
+   *  4. [<branch>:<a>,<b>] otherwise
+   */
   const formattedScopes =
     (scopes.length === 1 && scopes[0] === 'root' && 'root') ||
     (shallowEqualUnsortedArrays(scopes, allPackages) && '*') ||
