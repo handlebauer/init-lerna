@@ -1,6 +1,7 @@
 export const buildPackageJson = ({ user, repo }) => ({
   name: 'root',
   private: true,
+  workspaces: ['packages/*'],
   version: '0.0.0',
   author: 'Donald Geddes',
   licence: 'MIT',
@@ -8,6 +9,7 @@ export const buildPackageJson = ({ user, repo }) => ({
   scripts: {
     test: 'lerna run test',
     build: 'lerna run build',
-    version: 'lerna run version',
+    version: 'lerna version',
+    publish: 'lerna publish',
   },
 })
