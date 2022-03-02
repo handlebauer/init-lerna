@@ -83,6 +83,9 @@ await $`chmod +x .husky/pre-commit`
 await $`chmod +x .husky/prepare-commit-msg`
 await $`git add . && git commit -m "Configure husky"`
 
+// Final linking, etc.
+await $`yarn`
+
 // Copy new package path to clipboard
 clipboard.writeSync(`cd ${repo}`)
 
