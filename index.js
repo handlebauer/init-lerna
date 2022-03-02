@@ -78,7 +78,7 @@ await $`git add . && git commit -m "[main:root] Init"`
 
 // Set up husky
 await $`npx husky install`
-await $`npm set-script prepare "husky install"`
+await $`npm set-script prepare "husky install && lerna run prepare"`
 await $`chmod +x .husky/pre-commit`
 await $`chmod +x .husky/prepare-commit-msg`
 await $`git add . && git commit -m "Configure husky"`
